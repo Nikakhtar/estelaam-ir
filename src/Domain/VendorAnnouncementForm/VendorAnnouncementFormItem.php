@@ -1,5 +1,5 @@
 <?php
-namespace Domain;
+namespace Domain\VendorAnnouncementForm;
 
 class VendorAnnouncementFormItem {
     private $id;

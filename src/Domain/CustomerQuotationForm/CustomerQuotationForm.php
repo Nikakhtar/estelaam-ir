@@ -1,5 +1,5 @@
 <?php
-namespace Domain;
+namespace Domain\CustomerQuotationForm;
 
 class CustomerQuotationForm {
     private $id;

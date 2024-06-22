@@ -1,5 +1,5 @@
 <?php
-namespace Domain;
+namespace Domain\BillForm;
 
 class BillFormItem {
     private $id;

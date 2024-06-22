@@ -1,5 +1,5 @@
 <?php
-namespace Domain;
+namespace Domain\InvoiceForm;
 
 class InvoiceForm {
     private $id;
