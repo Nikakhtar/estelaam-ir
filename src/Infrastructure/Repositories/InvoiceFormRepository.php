@@ -1,6 +1,7 @@
 <?php
 namespace Infrastructure\Repositories;
 
+use Infrastructure\Database\DatabaseConnection;
 use pdo;
 use Domain\InvoiceForm\InvoiceForm;
 
@@ -8,10 +9,11 @@ class InvoiceFormRepository {
     private $pdo;
 
     public function __construct() {
-        $this->initializePDO();
+        //$this->initializePDO();
+        $this->pdo = DatabaseConnection::getPDO();
     }
 
-    private function initializePDO() {
+    /*private function initializePDO() {
         $host = '127.0.0.1';
         $db   = 'estelaam';
         $user = 'root';
@@ -30,7 +32,7 @@ class InvoiceFormRepository {
         } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
-    }
+    }*/
 
     public function findById($id) {
         // Assume PDO is set up and available as $this->pdo
