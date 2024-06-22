@@ -11,13 +11,13 @@ class InvoiceForm {
     public $description;
     public $items; // Array of InvoiceItem
 
-    public function __construct($id, $application, $bill_form, $by_person, $type, $submit_date, $description, array $items = array()) {
+    public function __construct($id, $application, $billForm, $byPerson, $type, $submitDate, $description, array $items = array()) {
         $this->id = $id;
         $this->application = $application;
-        $this->billForm = $bill_form;
-        $this->byPerson = $by_person;
+        $this->billForm = $billForm;
+        $this->byPerson = $byPerson;
         $this->type = $type;
-        $this->submitDate = $submit_date;
+        $this->submitDate = $submitDate;
         $this->description = $description;
         $this->items = $items;
     }

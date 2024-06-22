@@ -38,7 +38,7 @@ class InvoiceFormRepository {
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch();
 
-
+        //fetch items alsoooooooooooooooooooooooooo and add to data
         return $invoice = new InvoiceForm(
           $data['id'],
           $data['application'],
@@ -46,7 +46,8 @@ class InvoiceFormRepository {
           $data['by_person'],
           $data['type'],
           $data['submit_date'],
-          $data['description']
+          $data['description'],
+          $data
         );
 
         //return new InvoiceForm(...$data); // Assuming InvoiceForm constructor can handle this array
