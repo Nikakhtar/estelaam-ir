@@ -2,22 +2,22 @@
 namespace Domain\InvoiceForm;
 
 class InvoiceForm {
-    private $id;
-    private $application;
-    private $billForm;
-    private $byPerson;
-    private $type;
-    private $submitDate;
-    private $description;
-    //private $items; // Array of InvoiceItem
+    public $id;
+    public $application;
+    public $billForm;
+    public $byPerson;
+    public $type;
+    public $submitDate;
+    public $description;
+    public $items; // Array of InvoiceItem
 
-    public function __construct($id, $application, $billForm, $byPerson, $type, $submitDate, $description, array $items=NULL) {
+    public function __construct($id, $application, $bill_form, $by_person, $type, $submit_date, $description, array $items = array()) {
         $this->id = $id;
         $this->application = $application;
-        $this->billForm = $billForm;
-        $this->byPerson = $byPerson;
+        $this->billForm = $bill_form;
+        $this->byPerson = $by_person;
         $this->type = $type;
-        $this->submitDate = $submitDate;
+        $this->submitDate = $submit_date;
         $this->description = $description;
         $this->items = $items;
     }

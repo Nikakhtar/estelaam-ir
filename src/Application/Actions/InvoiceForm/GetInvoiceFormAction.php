@@ -15,6 +15,7 @@ class GetInvoiceFormAction {
     public function __invoke(Request $request, Response $response, array $args): Response {
         $invoiceId = $args['id'];
         $invoice = $this->invoiceFormRepository->findById($invoiceId);
+
         $response->getBody()->write(json_encode($invoice));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
