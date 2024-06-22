@@ -37,7 +37,17 @@ class InvoiceFormRepository {
         $stmt = $this->pdo->prepare("SELECT * FROM invoice_form WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch();
-        return new InvoiceForm(...$data); // Assuming InvoiceForm constructor can handle this array
+        return $invoice = new InvoiceForm(
+          $data['id'],
+          $data['application'],
+          $data['bill_form'],
+          $data['by_person'],
+          $data['type'],
+          $data['submit_date'],
+          $data['description']
+        );
+
+        //return new InvoiceForm(...$data); // Assuming InvoiceForm constructor can handle this array
     }
 
     public function update($id, $data) {

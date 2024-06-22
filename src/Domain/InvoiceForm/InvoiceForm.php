@@ -9,9 +9,9 @@ class InvoiceForm {
     private $type;
     private $submitDate;
     private $description;
-    private $items; // Array of InvoiceItem
+    //private $items; // Array of InvoiceItem
 
-    public function __construct($id, $application, $billForm, $byPerson, $type, $submitDate, $description, array $items) {
+    public function __construct($id, $application, $billForm, $byPerson, $type, $submitDate, $description, array $items=NULL) {
         $this->id = $id;
         $this->application = $application;
         $this->billForm = $billForm;
