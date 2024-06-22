@@ -7,6 +7,10 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
+///////////////
+use Application\Actions\InvoiceForm\GetInvoiceFormAction;
+use Application\Actions\InvoiceForm\UpdateInvoiceFormAction;
+///////////////
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -23,4 +27,8 @@ return function (App $app) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
     });
+
+    /////////////////////
+    $app->get('/invoices/{id}', GetInvoiceFormAction::class);
+    $app->put('/invoices/{id}/update-full', UpdateInvoiceFormAction::class);
 };
