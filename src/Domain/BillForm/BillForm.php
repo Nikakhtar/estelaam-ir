@@ -2,17 +2,17 @@
 namespace Domain\BillForm;
 
 class BillForm {
-    private $id;
-    private $application;
-    private $vendorAnnouncementForm;
-    private $byPerson;
-    private $type;
-    private $submitDate;
-    private $expireDate;
-    private $description;
-    private $items; // Array of BillFormItem
+    public $id;
+    public $application;
+    public $vendorAnnouncementForm;
+    public $byPerson;
+    public $type;
+    public $submitDate;
+    public $expireDate;
+    public $description;
+    public $items; // Array of BillFormItem
 
-    public function __construct($id, $application, $vendorAnnouncementForm, $byPerson, $type, $submitDate, $expireDate, $description, array $items) {
+    public function __construct($id, $application, $vendorAnnouncementForm, $byPerson, $type, $submitDate, $expireDate, $description, array $items = array()) {
         $this->id = $id;
         $this->application = $application;
         $this->vendorAnnouncementForm = $vendorAnnouncementForm;
