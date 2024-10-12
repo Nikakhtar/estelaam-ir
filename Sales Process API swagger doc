@@ -1,0 +1,476 @@
+swagger: '2.0'
+info:
+  title: Sales Process API
+  description: API to handle sales processes including quotations, vendor announcements, bills, and invoices.
+  version: '1.0.0'
+host: 'example.com'
+schemes:
+  - https
+basePath: '/api'
+produces:
+  - application/json
+
+paths:
+  /customer-quotation-forms:
+    post:
+      summary: Create a new customer quotation form
+      description: Submit a new customer quotation form with its items.
+      operationId: createCustomerQuotationForm
+      parameters:
+        - name: customer_quotation_form
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CustomerQuotationForm'
+      responses:
+        '201':
+          description: Successfully created
+        '400':
+          description: Invalid input
+
+  /customer-quotation-forms/{id}:
+    get:
+      summary: Get a customer quotation form by ID
+      description: Retrieve a customer quotation form and its items by ID.
+      operationId: getCustomerQuotationFormById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/CustomerQuotationForm'
+        '404':
+          description: Quotation form not found
+
+  /vendor-announcement-forms:
+    post:
+      summary: Submit a vendor announcement form
+      description: Create a vendor announcement form in response to a customer quotation.
+      operationId: createVendorAnnouncementForm
+      parameters:
+        - name: vendor_announcement_form
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/VendorAnnouncementForm'
+      responses:
+        '201':
+          description: Successfully created
+        '400':
+          description: Invalid input
+
+  /vendor-announcement-forms/{id}:
+    get:
+      summary: Get a vendor announcement form by ID
+      description: Retrieve a vendor announcement form and its items by ID.
+      operationId: getVendorAnnouncementFormById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/VendorAnnouncementForm'
+        '404':
+          description: Announcement form not found
+
+  /bills:
+    post:
+      summary: Create a bill from vendor announcement
+      description: Submit a bill based on vendor announcement form and its items.
+      operationId: createBill
+      parameters:
+        - name: bill
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/BillForm'
+      responses:
+        '201':
+          description: Successfully created
+        '400':
+          description: Invalid input
+
+  /bills/{id}:
+    get:
+      summary: Get a bill by ID
+      description: Retrieve a bill and its items by ID.
+      operationId: getBillById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/BillForm'
+        '404':
+          description: Bill not found
+
+  /invoices:
+    post:
+      summary: Create an invoice from a bill
+      description: Submit an invoice based on a bill and its items.
+      operationId: createInvoice
+      parameters:
+        - name: invoice
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/InvoiceForm'
+      responses:
+        '201':
+          description: Successfully created
+        '400':
+          description: Invalid input
+
+  /invoices/{id}:
+    get:
+      summary: Get an invoice by ID
+      description: Retrieve an invoice and its items by ID.
+      operationId: getInvoiceById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/InvoiceForm'
+        '404':
+          description: Invoice not found
+  
+  /invoices/{id}/update-full:
+    put:
+      summary: Update an invoice and its items fully
+      description: Update all properties of an existing invoice and all properties of its items.
+      operationId: updateFullInvoiceAndItems
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: invoiceUpdateDetails
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - invoice
+              - items
+            properties:
+              invoice:
+                type: object
+                required:
+                  - application
+                  - bill_form
+                  - by_person
+                  - type
+                  - submit_date
+                properties:
+                  application:
+                    type: integer
+                    format: int64
+                  bill_form:
+                    type: integer
+                    format: int64
+                  by_person:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                      - customer
+                      - vendor
+                  submit_date:
+                    type: string
+                    format: date
+                  description:
+                    type: string
+              items:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - article
+                    - quantity
+                    - unit_price
+                    - unit
+                  properties:
+                    article:
+                      type: integer
+                      format: int64
+                    quantity:
+                      type: integer
+                    unit_price:
+                      type: integer
+                    unit:
+                      type: integer
+                    delivery_state:
+                      type: string
+                      enum:
+                        - pending
+                        - shipped
+                        - delivered
+                        - cancelled
+                    delivery_time:
+                      type: string
+                      format: datetime
+                    description:
+                      type: string
+      responses:
+        '200':
+          description: Successfully updated the invoice and items
+        '404':
+          description: Invoice not found
+        '400':
+          description: Invalid input
+
+  /send-sms:
+    post:
+      summary: Send an SMS message
+      description: Send an SMS message based on a template to a specified person.
+      operationId: sendSMS
+      parameters:
+        - name: sms_details
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SMSDetails'
+      responses:
+        '202':
+          description: SMS sent successfully
+        '400':
+          description: Invalid input
+
+definitions:
+  CustomerQuotationForm:
+    type: object
+    required:
+      - application
+      - by_person
+    properties:
+      application:
+        type: integer
+        format: int64
+      by_person:
+        type: string
+      submit_date:
+        type: string
+        format: date
+      expire_date:
+        type: string
+        format: date
+      description:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/QuotationFormItem'
+
+  QuotationFormItem:
+    type: object
+    required:
+      - article
+      - quantity
+    properties:
+      article:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+      unit:
+        type: integer
+      article_name_place:
+        type: string
+      description:
+        type: string
+
+  VendorAnnouncementForm:
+    type: object
+    required:
+      - application
+      - customer_quotation_form
+      - by_person
+    properties:
+      application:
+        type: integer
+        format: int64
+      customer_quotation_form:
+        type: integer
+        format: int64
+      by_person:
+        type: string
+      submit_date:
+        type: string
+        format: date
+      expire_date:
+        type: string
+        format: date
+      description:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/AnnouncementFormItem'
+
+  AnnouncementFormItem:
+    type: object
+    required:
+      - article
+      - price
+    properties:
+      article:
+        type: integer
+        format: int64
+      price:
+        type: integer
+      available_quantity:
+        type: integer
+      unit:
+        type: integer
+      description:
+        type: string
+
+  BillForm:
+    type: object
+    required:
+      - application
+      - vendor_announcement_form
+      - by_person
+    properties:
+      application:
+        type: integer
+        format: int64
+      vendor_announcement_form:
+        type: integer
+        format: int64
+      by_person:
+        type: string
+      type:
+        type: string
+        enum:
+          - customer
+          - vendor
+      submit_date:
+        type: string
+        format: date
+      expire_date:
+        type: string
+        format: date
+      description:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/BillFormItem'
+
+  BillFormItem:
+    type: object
+    required:
+      - article
+      - quantity
+    properties:
+      article:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+      unit_price:
+        type: integer
+      unit:
+        type: integer
+      description:
+        type: string
+
+  InvoiceForm:
+    type: object
+    required:
+      - application
+      - bill_form
+      - by_person
+    properties:
+      application:
+        type: integer
+        format: int64
+      bill_form:
+        type: integer
+        format: int64
+      by_person:
+        type: string
+      type:
+        type: string
+        enum:
+          - customer
+          - vendor
+      submit_date:
+        type: string
+        format: date
+      description:
+        type: string
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/InvoiceFormItem'
+
+  InvoiceFormItem:
+    type: object
+    required:
+      - article
+      - quantity
+    properties:
+      article:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+      unit_price:
+        type: integer
+      unit:
+        type: integer
+      delivery_state:
+        type: string
+        enum:
+          - pending
+          - shipped
+          - delivered
+          - cancelled
+      delivery_time:
+        type: string
+        format: datetime
+      description:
+        type: string
+
+  SMSDetails:
+    type: object
+    required:
+      - template_sms_id
+      - content_parameters
+      - person_id
+    properties:
+      template_sms_id:
+        type: integer
+        format: int64
+      content_parameters:
+        type: array
+        items:
+          type: string
+      person_id:
+        type: integer
+        format: int64
+
